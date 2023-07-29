@@ -16,14 +16,3 @@ subject-specific but lower-resolution household surveys. This application provid
 and survey data, as well as shapefiles for display of results.  Users are directed to choose the relevant indicatorsfrom survey data, as well as variables that are common to both survey and census data as a basis for building a linear model. The application presents methods for checking the suitability of variables for modeling.  When the user has constructed a suitable model, the app allows for diagnostic testing of model results and finally prediction of the results into relevant census units. Users can export analytic steps as tabular or figure results.
 
   
-***
-  
-# Background
-The methods used in this application were described by the UNFPA's Small Area Estimation Guidance.  
-  
-
-## Analytic Approach
-Population demographic data found in international household surveys often use binary responses to estimate prevalence rates in populations. Because of this, the application uses a logistic regression modeling approach.  In addition, the distribution of effort in population health surveys is not equal within the regions, meaning that over-representation of sampling effort in some areas may bias results in others. For this reason, the application allows for use of a random effects model. 
-
-At present, the app is not suitable for continuous response variables. Future iterations may provide this functionality. 
-  
