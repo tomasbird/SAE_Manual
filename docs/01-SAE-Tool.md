@@ -12,9 +12,7 @@ output:
     keep_md: true
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+
 
 # Background
 The methods used in this application were described by the UNFPA's Small Area Estimation Guidance.  

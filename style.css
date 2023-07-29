@@ -50,3 +50,22 @@ a:hover {
   border-right: solid 1px #eee; /* Thin right border on TOC list */
 }
 
+  /*----------LOGO above TOC---------*/
+
+#TOC::before {
+  content: "";
+  display: block;
+  height: 200px;
+  margin: 20px 20px 40px 20px;
+  background-image: url("unfpalogo.png");
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+/*----------------ADDING WHITE SPACE-------------*/
+
+.title {
+  margin-top: 2.75em !important;
+  margin-bottom: 0.75em;
+}
