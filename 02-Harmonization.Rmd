@@ -37,6 +37,6 @@ knitr::opts_chunk$set(echo = TRUE, eval = TRUE)
 ```
 
 
-#```{r child = here::here("Harmonization_rmd", "06-Functions.Rmd")}
+```{r child = here::here("Harmonization_rmd", "06-Functions.Rmd")}
 
-#```
+```

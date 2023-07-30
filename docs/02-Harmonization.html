@@ -1191,9 +1191,377 @@ variables by renaming the columns of this data frame:</p>
 <p>Finally, use the <code>write.csv()</code> function to send the
 harmonized IPUMS data set to a .csv file:</p>
 <pre class="r"><code>write.csv(sl_harmonized_dhs, file = &quot;sl_harmonized_dhs.csv&quot;, row.names = FALSE)</code></pre>
-<p>#```{r child = here::here(“Harmonization_rmd”,
-“06-Functions.Rmd”)}</p>
-<p>#```</p>
+</div>
+</div>
+<div id="step-4-variable-harmonization-1" class="section level1">
+<h1>Step 4: Variable harmonization</h1>
+<div id="step-4a-category-alignment-1" class="section level2">
+<h2>Step 4A: Category alignment</h2>
+<p>The easiest way to demonstrate the harmonization process is through
+specific examples, so we will describe the harmonization of the
+<code>religion</code> variable for the Sierra Leone data. It is
+reasonable to assume that a woman’s religion might influence her use of
+and/or demand for contraception, so we would like to include
+<code>religion</code> in our models for the three DHS indicators.</p>
+<p>In Step 2B, we identified <code>V130</code> as the religion variable
+from the DHS sample and <code>SL2015A_RELIG</code> as the religion
+variable from the IPUMS sample. First, as an exploratory task, we use
+the user-defined function
+<code>compare_categories()' to run a quick weighted tabulation on these two variables. Note that we use the individual sample weights</code>V005R<code>and</code>PERWT`
+to weight the DHS and IPUMS samples, respectively.</p>
+<pre class="r"><code>compare_categories(ipums_data = &quot;sl2015_ipums&quot;, ipums_var = &quot;SL2015A_RELIG&quot;,
+                   ipums_weight = &quot;PERWT&quot;, dhs_data = &quot;sl2019_dhs_ir&quot;,
+                   dhs_var = &quot;V130&quot;, dhs_weight = &quot;V005R&quot;)</code></pre>
+<div class="figure">
+<img src="img/manual_step_4a_wiki.png" id="id" class="class"
+style="width:70.0%;height:70.0%" alt="" />
+<p class="caption">Harmonization flowchart</p>
+</div>
+<p>We find that <code>SL2015A_RELIG</code> has more categories than
+<code>V130</code>, so the main harmonization task in this particular
+instance will be to consolidate the categories of
+<code>SL2015A_RELIG</code> to match those of <code>V130</code>.</p>
+<p>I suggest moving out of <code>RStudio</code> temporarily and aligning
+these categories in the Excel workbook
+<code>[Country name] Harmonization - Recodes.xlsx</code> from Step 3D.
+The finished product can be seen below:</p>
+<div class="figure">
+<img src="img/manual_step_4a.png" id="id" class="class"
+style="width:70.0%;height:70.0%" alt="" />
+<p class="caption">Harmonization flowchart</p>
+</div>
+<p>A couple things to note:</p>
+<ul>
+<li>Column C contains the categories from the IPUMS variable
+<code>SL2015A_RELIG</code>.</li>
+<li>Column E contains the categories from the DHS variable
+<code>V130</code>. Bahai and Traditional actually <em>are</em>
+categories of the DHS variable <code>V130</code>, but they do not show
+up in the weighted frequency table above because zero cases were
+recorded in each of them.</li>
+<li>Column B contains the harmonized variable labels, which were
+determined during this process of category alignment. Column A contains
+an arbitrary numbering of these harmonized variable labels.</li>
+</ul>
+<p>Harmonizing <code>SL2015A_RELIG</code> and <code>V130</code> is
+relatively straightforward. The six Christian denominations in
+<code>SL2015A_RELIG</code> can be matched with the single Christian
+category in <code>V130</code>. In both variables, there is one category
+for Islam, so these can be aligned next. In the weighted frequency
+tables above, we observe that Christianity and Islam account for close
+to 100% of the cases in both variables, and none of the remaining
+categories in either <code>SL2015A_RELIG</code> or <code>V130</code>
+have a significant number of cases. Therefore, it makes the most sense
+to combine the remaining labels into a harmonized category called
+“Other”.</p>
+</div>
+<div id="step-4b-create-harmonized-ipums-and-dhs-variables-1"
+class="section level2">
+<h2>Step 4B: Create harmonized IPUMS and DHS variables</h2>
+<p>Now we will move back into <code>RStudio</code> and create the
+harmonized variables for both IPUMS and DHS. First, use the
+<code>fre()</code> function from the <code>expss</code> package to save
+a copy of the weighted frequency table from above:</p>
+<pre class="r"><code>freq_RELIG = fre(sl2015_ipums$SL2015A_RELIG, weight = sl2015_ipums$PERWT)</code></pre>
+<p>Next, use the <code>factor()</code> and <code>ifelse()</code>
+functions to create the harmonized IPUMS variable. If you are unfamiliar
+with these functions, you can check out their respective help pages here
+(<a
+href="https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/factor"
+class="uri">https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/factor</a>)
+and here (<a
+href="https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/ifelse"
+class="uri">https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/ifelse</a>).
+We suggest naming the new variable <code>SL2015A_RELIGR</code>, which is
+just the original variable name with the letter “R” appended (“R” stands
+for “recode”).</p>
+<pre class="r"><code>sl2015_ipums$SL2015A_RELIGR = 
+  factor(ifelse(sl2015_ipums$SL2015A_RELIG == &quot;Catholic&quot; |
+                 sl2015_ipums$SL2015A_RELIG == &quot;Anglican&quot; |
+                 sl2015_ipums$SL2015A_RELIG == &quot;Methodist&quot; |
+                 sl2015_ipums$SL2015A_RELIG == &quot;Seventh-day Adventists (SDA)&quot; |
+                 sl2015_ipums$SL2015A_RELIG == &quot;Pentecostal&quot; |
+                 sl2015_ipums$SL2015A_RELIG == &quot;Other Christian&quot;,
+               &quot;Christian&quot;,
+               ifelse(sl2015_ipums$SL2015A_RELIG == &quot;Islam&quot;,
+                      &quot;Islam&quot;,
+                      ifelse(sl2015_ipums$SL2015A_RELIG == &quot;Bahai&quot; |
+                               sl2015_ipums$SL2015A_RELIG == &quot;Traditional&quot; |
+                               sl2015_ipums$SL2015A_RELIG == &quot;Other&quot; |
+                               sl2015_ipums$SL2015A_RELIG == &quot;No religion&quot;,
+                             &quot;Other&quot;, NA))),
+        levels = c(&quot;Christian&quot;, &quot;Islam&quot;, &quot;Other&quot;))</code></pre>
+<p>The general idea behind these lines of code is as follows: If an
+individual is labeled as “Catholic”, “Anglican”, “Methodist”,
+“Seventh-day Adventists (SDA)”, “Pentecostal”, and “Other Christian” in
+the original variable, assign them to a category called “Christian” in
+the harmonized variable. If they are in the “Islam” category in the
+original variable, assign them to a category called “Christian” in the
+harmonized variable. If they are assigned to “Bahai”, “Traditional”,
+“Other”, or “No religion” in the original variable, assign them to
+“Other” in the harmonized variable. If any individuals are not covered
+by these three rules, mark them as missing (<code>NA</code>). (Note that
+no cases should be missing in the harmonized variable — if you notice
+any <code>NA</code> cases when tabulating the harmonized variable, you
+should go back and fix this issue.)</p>
+<p>Next, use the user-defined function <code>new_var_label()</code> to
+assign a variable label to <code>SL2015A_RELIGR</code>. We suggest using
+a standard convention variable label where you simply append “(recode)”
+to the original variable label:</p>
+<pre class="r"><code>sl2015_ipums = new_var_label(sl2015_ipums, &quot;Religion (recode)&quot;)</code></pre>
+<p>Finally, check your work by generating a weighted frequency table of
+the harmonized IPUMS variable:</p>
+<pre class="r"><code>freq_RELIGR = fre(sl2015_ipums$SL2015A_RELIGR, weight = sl2015_ipums$PERWT)
+print(freq_RELIGR[,c(1:2, 4)])</code></pre>
+<div class="figure">
+<img src="img/manual_step_4b_wiki_1.png" id="id" class="class"
+style="width:70.0%;height:70.0%" alt="" />
+<p class="caption">Harmonization flowchart</p>
+</div>
+<p>We have successfully created the harmonized IPUMS variable for
+<code>religion</code>, and we can basically apply the same procedures to
+create the harmonized DHS variable. First, we save a copy of the
+weighted frequency table:</p>
+<pre class="r"><code>V130_freq = fre(sl2019_dhs_ir$V130, weight = sl2019_dhs_ir$V005R, drop_unused_labels = FALSE)</code></pre>
+<p>Next, we use <code>factor()</code> and <code>ifelse()</code> to
+create the harmonized variable, which we name <code>V130R</code>. We
+also add a variable label for <code>V130R</code>:</p>
+<pre class="r"><code># Create harmonized DHS variable
+sl2019_dhs_ir$V130R = factor(ifelse(sl2019_dhs_ir$V130 == &quot;Christian&quot;,
+                                    &quot;Christian&quot;,
+                                    ifelse(sl2019_dhs_ir$V130 == &quot;Islam&quot;,
+                                           &quot;Islam&quot;,
+                                           ifelse(sl2019_dhs_ir$V130 == &quot;Bahai&quot; |
+                                                    sl2019_dhs_ir$V130 == &quot;Traditional&quot; |
+                                                    sl2019_dhs_ir$V130 == &quot;Other&quot; |
+                                                    sl2019_dhs_ir$V130 == &quot;None&quot;,
+                                                  &quot;Other&quot;, NA))),
+                             levels = c(&quot;Christian&quot;, &quot;Islam&quot;, &quot;Other&quot;))
+
+# Add variable label
+sl2019_dhs_ir = new_var_label(sl2019_dhs_ir, &quot;Religion (recode)&quot;)</code></pre>
+<p>Finally, we generate a weighted frequency table for the harmonized
+DHS variable:</p>
+<pre class="r"><code>V130R_freq = frequency(sl2019_dhs_ir$V130R, weight = sl2019_dhs_ir$V005R, drop_unused_labels = FALSE)
+print(V130R_freq[,c(1:2, 4)])</code></pre>
+<div class="figure">
+<img src="img/manual_step_4b_wiki_2.png" id="id" class="class"
+style="width:70.0%;height:70.0%" alt="" />
+<p class="caption">Harmonization flowchart</p>
+</div>
+</div>
+<div id="step-4c-write-harmonization-output-to-excel-1"
+class="section level2">
+<h2>Step 4C: Write harmonization output to Excel</h2>
+<p>Now that we have created the harmonized variables for both the IPUMS
+data and the DHS data, we can organize our work in the Excel workbook
+<code>[Country name] Harmonization - Output.xlsx</code> that you created
+in Step 3D. Use the <code>addWorksheet()</code> function from the
+<code>openxlsx</code> package to create a new sheet called “Religion”
+within your workbook:</p>
+<pre class="r"><code>addWorksheet(sl_harmonization_output, &quot;Religion&quot;)</code></pre>
+</div>
+</div>
+<div id="appendix-user-defined-r-functions" class="section level1">
+<h1>Appendix: User-defined R functions</h1>
+<div id="compare_categories" class="section level2">
+<h2>compare_categories</h2>
+<pre class="r"><code>compare_categories = function(ipums_data = NULL, ipums_var = NULL, ipums_weight = NULL,
+                              dhs_data = NULL, dhs_var = NULL, dhs_weight = NULL) {
+  # This function creates a weighted frequency table for a maximum of one IPUMS 
+  # variable and one DHS variable. The purpose of this function is to easily compare
+  # the categories and frequencies of potentially harmonizable IPUMS and DHS 
+  # variables as a preliminary step in the harmonization process.
+  #
+  # Inputs:
+  #   ipums_data = Name of the IPUMS data frame (e.g., &quot;sl2015_ipums&quot;). Must be 
+  #                 entered as a string.
+  #   ipums_var = Name of the variable in the IPUMS data frame for which the table
+  #                 is to be constructed (e.g., &quot;SL2015_MARST&quot;). Must be entered
+  #                 as a string.
+  #   ipums_weight = Name of the variable in the IPUMS data frame corresponding to 
+  #                   the weight variable (e.g., &quot;PERWT&quot;). Must be entered as a string.
+  #   dhs_data = Name of the DHS data frame (e.g., &quot;sl2019_dhs_ir&quot;). Must be entered 
+  #               as a string.
+  #   dhs_var = Name of the variable in the DHS data frame for which the table is to 
+  #               be constructed (e.g., &quot;V501&quot;). Must be entered as a string.
+  #   dhs_weight = Name of the variable in the IPUMS data frame corresponding to the 
+  #                 weight variable (e.g., &quot;V005R&quot;). Must be entered as a string.
+  #
+  # Prints:
+  #   Two tables of weighted counts and percents: One for ipums_var, and one for dhs_var.
+  #
+  
+  
+  if(!any(is.null(ipums_data), is.null(ipums_var), is.null(ipums_weight))) {
+    IPUMS = eval(parse(text = noquote(paste0(ipums_data, &quot;$&quot;, ipums_var))))
+    weight_ipums = eval(parse(text = noquote(paste0(ipums_data, &quot;$&quot;, ipums_weight))))
+    
+    print(noquote(paste0(&quot;IPUMS weighted frequency table for &quot;, ipums_var, &quot;:&quot;)))
+    print(fre(IPUMS, weight = weight_ipums)[, c(1:2, 4)])
+    
+    cat(&quot;\n\n\n&quot;)
+  }
+  
+  if(!any(is.null(dhs_data), is.null(dhs_var), is.null(dhs_weight))) {
+    DHS = eval(parse(text = noquote(paste0(dhs_data, &quot;$&quot;, dhs_var))))
+    weight_dhs = eval(parse(text = noquote(paste0(dhs_data, &quot;$&quot;, dhs_weight))))
+    
+    print(noquote(paste0(&quot;DHS weighted frequency table for &quot;, dhs_var, &quot;:&quot;)))
+    print(fre(DHS, weight = weight_dhs)[, c(1:2, 4)])
+  }
+}</code></pre>
+</div>
+<div id="new_var_label" class="section level2">
+<h2>new_var_label</h2>
+<pre class="r"><code>new_var_label = function(dataframe, label) {
+  # This function appends a variable label to a data frame.
+  #
+  # Inputs:
+  #   dataframe = The data frame to which the user would like to append a variable label.
+  #   label = Variable label that the user would like to append to the data frame. Must be
+  #           a string of characters; otherwise, the function will return an error message.
+  #
+  # Returns:
+  #   An updated version of the dataframe that includes the new variable label.
+  #
+  
+  attr(dataframe, &quot;variable.labels&quot;) = c(attr(dataframe, &quot;variable.labels&quot;), label)
+  
+  return(dataframe)
+}</code></pre>
+</div>
+<div id="write_ipums_output" class="section level2">
+<h2>write_ipums_output</h2>
+<pre class="r"><code>write_ipums_output = function(workbook_name, sheet_name, ipums_data, ipums_var_names, 
+                              ipums_freq_tables, output_start_row = 1) {
+  # This function writes the IPUMS harmonization output to an excel workbook.
+  #
+  # Inputs:
+  #   workbook_name = Name of the object that identifies the excel workbook in which the output 
+  #                   is being stored.
+  #   sheet_name = Name of the sheet within workbook_name to which the output should be written.
+  #   ipums_data = Name of the IPUMS dataset.
+  #   ipums_var_names = Vector of IPUMS variable names indicating the variables that are to be 
+  #                     written to sheet_name. Must be the same length as ipums_freq_tables, 
+  #                     otherwise the function returns an error message. Must also have a length 
+  #                     of no more than 3, otherwise the function returns an error message.
+  #   ipums_freq_tables = List of data frames corresponding to the variables listed in ipums_var_names.
+  #                       Must be the same length as ipums_var_names, otherwise the function returns 
+  #                       an error message. Must also have a length of no more than 3, otherwise the 
+  #                       function returns an error message.
+  #
+  # Returns:
+  #   Nothing. The function prints the output to the excel sheet/workbook, as specified by the user.
+  #
+  
+  if (length(ipums_var_names) != length(ipums_freq_tables)) {
+    return(&quot;Error: ipums_var_names must be the same length as ipums_freq_tables.&quot;)
+  }
+  
+  if (length(ipums_var_names) &gt; 3) {
+    return(&quot;Error: ipums_var_names and ipums_freq_tables must have lengths of no more than 3.&quot;)
+  }
+  
+  for (i in 1:length(ipums_var_names)) {
+    if (i == 1) {
+      writeData(workbook_name, sheet = sheet_name, startRow = output_start_row, &quot;IPUMS 2015&quot;)
+      writeData(workbook_name, sheet = sheet_name, startRow = output_start_row + 1,
+                attr(ipums_data, &quot;variable.labels&quot;)[which(attr(ipums_data, &quot;names&quot;) == 
+                                                            ipums_var_names[i])])
+      writeData(workbook_name, sheet = sheet_name, startRow = output_start_row + 3,
+                cbind(ipums_freq_tables[[i]][,1], round(ipums_freq_tables[[i]][,2], 0), 
+                      round(ipums_freq_tables[[i]][,-c(1,2)], 2)))
+    }
+    if (i == 2) {
+      writeData(workbook_name, sheet = sheet_name, startRow = nrow(ipums_freq_tables[[i - 1]]) + 
+                  (output_start_row + 7),
+                attr(ipums_data, &quot;variable.labels&quot;)[which(attr(ipums_data, &quot;names&quot;) == 
+                                                            ipums_var_names[i])])
+      writeData(workbook_name, sheet = sheet_name, startRow = nrow(ipums_freq_tables[[i - 1]]) + 
+                  (output_start_row + 9),
+                cbind(ipums_freq_tables[[i]][,1], round(ipums_freq_tables[[i]][,2], 0), 
+                      round(ipums_freq_tables[[i]][,-c(1,2)], 2)))
+    }
+    if (i == 3) {
+      writeData(workbook_name, sheet = sheet_name, startRow = nrow(ipums_freq_tables[[i - 2]]) + 
+                  nrow(ipums_freq_tables[[i - 1]]) + (output_start_row + 13),
+                attr(ipums_data, &quot;variable.labels&quot;)[which(attr(ipums_data, &quot;names&quot;) == 
+                                                            ipums_var_names[i])])
+      writeData(workbook_name, sheet = sheet_name, startRow = nrow(ipums_freq_tables[[i - 2]]) + 
+                  nrow(ipums_freq_tables[[i - 1]]) + (output_start_row + 15),
+                cbind(ipums_freq_tables[[i]][,1], round(ipums_freq_tables[[i]][,2], 0), 
+                      round(ipums_freq_tables[[i]][,-c(1,2)], 2)))
+    }
+  }
+}</code></pre>
+</div>
+<div id="write_dhs_output" class="section level2">
+<h2>write_dhs_output</h2>
+<pre class="r"><code>write_dhs_output = function(workbook_name, sheet_name, dhs_data, dhs_var_names, 
+                            dhs_freq_tables, output_start_row = 1) {
+  # This function writes the DHS harmonization output to an excel workbook.
+  #
+  # Inputs:
+  #   workbook_name = Name of the object that identifies the excel workbook in which the output 
+  #                   is being stored.
+  #   sheet_name = Name of the sheet within workbook_name to which the output should be written.
+  #   dhs_data = Name of the DHS dataset.
+  #   dhs_var_names = Vector of DHS variable names indicating the variables that are to be 
+  #                   written to sheet_name. Must be the same length as dhs_freq_tables, otherwise 
+  #                   the function returns an error message. Must also have a length of no more 
+  #                   than 3, otherwise the function returns an error message.
+  #   dhs_freq_tables = List of data frames corresponding to the variables listed in dhs_var_names. 
+  #                     Must be the same length as dhs_var_names, otherwise the function returns an 
+  #                     error message. Must also have a length of no more than 3, otherwise the 
+  #                     function returns an error message.
+  #
+  # Returns:
+  #   Nothing. The function prints the output to the excel sheet/workbook, as specified by the user.
+  #
+  
+  if (length(dhs_var_names) != length(dhs_freq_tables)) {
+    return(&quot;Error: dhs_var_names must be the same length as dhs_freq_tables.&quot;)
+  }
+  
+  if (length(dhs_var_names) &gt; 3) {
+    return(&quot;Error: dhs_var_names and dhs_freq_tables must have lengths of no more than 3.&quot;)
+  }
+  
+  
+  for (i in 1:length(dhs_var_names)) {
+    if (i == 1) {
+      writeData(workbook_name, sheet = sheet_name, startRow = output_start_row, startCol = 10, 
+                &quot;DHS 2019&quot;)
+      writeData(workbook_name, sheet = sheet_name, startRow = output_start_row + 1, startCol = 10,
+                attr(dhs_data, &quot;variable.labels&quot;)[which(attr(dhs_data, &quot;names&quot;) == 
+                                                          dhs_var_names[i])])
+      writeData(workbook_name, sheet = sheet_name, startRow = output_start_row + 3, startCol = 10,
+                cbind(dhs_freq_tables[[i]][,1], round(dhs_freq_tables[[i]][,2], 0), 
+                      round(dhs_freq_tables[[i]][,-c(1,2)], 2)))
+    }
+    if (i == 2) {
+      writeData(workbook_name, sheet = sheet_name, startRow = nrow(dhs_freq_tables[[i - 1]]) + 
+                  (output_start_row + 7), startCol = 10,
+                attr(dhs_data, &quot;variable.labels&quot;)[which(attr(dhs_data, &quot;names&quot;) == 
+                                                          dhs_var_names[i])])
+      writeData(workbook_name, sheet = sheet_name, startRow = nrow(dhs_freq_tables[[i - 1]]) + 
+                  (output_start_row + 9), startCol = 10,
+                cbind(dhs_freq_tables[[i]][,1], round(dhs_freq_tables[[i]][,2], 0), 
+                      round(dhs_freq_tables[[i]][,-c(1,2)], 2)))
+    }
+    if (i == 3) {
+      writeData(workbook_name, sheet = sheet_name, startRow = nrow(dhs_freq_tables[[i - 2]]) + 
+                  nrow(dhs_freq_tables[[i - 1]]) + (output_start_row + 13), startCol = 10,
+                attr(dhs_data, &quot;variable.labels&quot;)[which(attr(dhs_data, &quot;names&quot;) == 
+                                                          dhs_var_names[i])])
+      writeData(workbook_name, sheet = sheet_name, startRow = nrow(dhs_freq_tables[[i - 2]]) + 
+                  nrow(dhs_freq_tables[[i - 1]]) + (output_start_row + 15), startCol = 10,
+                cbind(dhs_freq_tables[[i]][,1], round(dhs_freq_tables[[i]][,2], 0), 
+                      round(dhs_freq_tables[[i]][,-c(1,2)], 2)))
+    }
+  }
+}</code></pre>
 </div>
 </div>
 
