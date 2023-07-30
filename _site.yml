@@ -6,6 +6,8 @@ navbar:
       href: index.html
     - text: "SAE tool"
       href: 01-SAE-Tool.html
+    - text: "Harmonization"
+      href: 02-Harmonization.html
 output_dir: "docs"
 output:
   html_document:

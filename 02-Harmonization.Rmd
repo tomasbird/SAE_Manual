@@ -1,0 +1,42 @@
+---
+title: "Harmonization"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE)
+```
+
+```{r child = here::here("Harmonization_rmd", "00-Harmonization-Preamble.Rmd")}
+
+```
+
+```{r child = here::here("Harmonization_rmd", "01-Download-Data.Rmd")}
+
+```
+
+```{r child = here::here("Harmonization_rmd", "02-SAE-Preliminaries.Rmd")}
+
+```
+
+```{r child = here::here("Harmonization_rmd", "03-Harmonize-Indicators.Rmd")}
+
+```
+
+
+```{r child = here::here("Harmonization_rmd", "04-Harmonize-Predictors.Rmd")}
+
+```
+
+
+```{r child = here::here("Harmonization_rmd", "05-Create-Files.Rmd")}
+
+```
+
+
+#```{r child = here::here("Harmonization_rmd", "06-Functions.Rmd")}
+
+#```

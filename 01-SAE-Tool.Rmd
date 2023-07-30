@@ -6,7 +6,7 @@ output:
     toc_float: true
 ---
 
-## Analytic Approach
+# Analytic Approach
 Population demographic data found in international household surveys often use binary responses to estimate prevalence rates in populations. Because of this, the application uses a logistic regression modeling approach.  In addition, the distribution of effort in population health surveys is not equal within the regions, meaning that over-representation of sampling effort in some areas may bias results in others. For this reason, the application allows for use of a random effects model. 
 
 At present, the app is not suitable for continuous response variables. Future iterations may provide this functionality. 
