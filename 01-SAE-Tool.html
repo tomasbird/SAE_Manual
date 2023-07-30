@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>SAE Tool</title>
+
+<script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">HOME</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="01-SAE-Tool.html">SAE tool</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">SAE Tool</h1>
+
+</div>
+
+
+<div id="analytic-approach" class="section level2">
+<h2>Analytic Approach</h2>
+<p>Population demographic data found in international household surveys
+often use binary responses to estimate prevalence rates in populations.
+Because of this, the application uses a logistic regression modeling
+approach. In addition, the distribution of effort in population health
+surveys is not equal within the regions, meaning that
+over-representation of sampling effort in some areas may bias results in
+others. For this reason, the application allows for use of a random
+effects model.</p>
+<p>At present, the app is not suitable for continuous response
+variables. Future iterations may provide this functionality.</p>
+<p><br/> ## How to use the application The application consists of
+different tabs for each stage of the analysis. These include selecting
+and comparing data, Setup of the models, model assessment and finally
+prediction. Under each tab, simple directions allow the user to control
+outputs and download results. Note that the contents of each tab depend
+on the previous tab results, so errors in data setup will propogate
+through the application and may result in error messages instead of
+expected results.</p>
+<hr />
+</div>
+<div id="landing-page" class="section level1">
+<h1>Landing Page</h1>
+<p>The landing page provides the gateway to the application features.
+Use the tabs at the top of the page to access different parts of the
+application.</p>
+<p><br/> <img src="..//img//LandingPage.png" id="id" class="class"
+style="width:70.0%;height:70.0%" alt="Application Landing Page" /></p>
+<hr />
+</div>
+<div id="select-data" class="section level1">
+<h1>Select Data</h1>
+<p>The Data selection tab allows users to either use sample DHS and
+survey datasets from Nepal, or to load the their own data. Currently the
+application does not allow for formatting of data, so all numerical data
+must be in a harmonized prior to being entered into the application.</p>
+<p><br/> <img src="..//img//Select_Data.png" id="id" class="class"
+style="width:70.0%;height:70.0%" alt="Select Data Tab" /></p>
+<p><br/> For a detailed description of the harmonization process, see
+____.: At minimum,</p>
+<ol style="list-style-type: decimal">
+<li>Item. Survey and census data must share exactly the same variable
+names</li>
+<li>Item. Variables that are common between survey and census must have
+the same definitions. For example, categorical variables must have the
+same number of classes, and these classes must be identical between the
+two sources</li>
+<li>Item. Variables must have roughly similar distributions between
+census and survey datasets.</li>
+</ol>
+<p>Code used to conduct harmonization are included in the appendix.</p>
+<p>Survey and census data each have their own tabs to assist with data
+loading. By default, data from Nepal will load, as the ‘Use Nepal data’
+checkbox will be checked. To use other data, uncheck this box. <br/></p>
+<p><img src="..//img//Use_Nepal.png" id="id" class="class"
+style="width:30.0%;height:30.0%"
+alt="Checkbox for loading data from Nepal" /> <br/></p>
+<p><br/></p>
+<div id="survey-tab" class="section level2">
+<h2>Survey tab</h2>
+<p>Survey data should include three different types of data: the
+indicator of interest, a column for the names of the survey regions used
+and additional columns for variables that will be used in the predictive
+model. If loading an external file, uncheck the ‘Use Nepal Data’ box and
+click on the ‘choose a .csv file’ box to select a file. <br/></p>
+<div class="figure">
+<img src="..//img//Survey_Tab.png" id="id" class="class"
+style="width:60.0%;height:60.0%" alt="" />
+<p class="caption">Survey Tab</p>
+</div>
+<p><img src="..//img//Load_Survey.png" id="id" class="class"
+style="width:30.0%;height:30.0%" alt="Load button for survey data" />
+<br/></p>
+<p>Once you have selected a file, it should appear at the bottom of the
+page.</p>
+<p><br/> <img src="..//img//Survey_Table.png" id="id" class="class"
+style="width:70.0%;height:70.0%" alt="Survey Tab" /></p>
+<p><br/></p>
+<p>Next, select a shapefile representing the survey regions.<br />
+<img src="..//img//Choose_Census.png" id="id" class="class"
+style="width:30.0%;height:30.0%" alt="Census shapefile selection" /></p>
+<p><br/> At present, only ESRI shapefiles are accepted. it is also
+important that when selecting the shapefile, all associated files are
+selected. Once a shapefile has been loaded it should appear at the top
+of the page.</p>
+<p><br/></p>
+<div class="figure">
+<img src="..//img//Select_Shapefile.png" id="id" class="class"
+style="width:60.0%;height:60.0%" alt="" />
+<p class="caption">Choosing all files for a shapefile</p>
+</div>
+<p><br/></p>
+<p>Once the shapefiles are loaded, a map will appear, unless there has
+been an error.</p>
+<p><br/></p>
+<div class="figure">
+<img src="..//img//Survey_Map.png" id="id" class="class"
+style="width:50.0%;height:50.0%" alt="" />
+<p class="caption">Map of survey areas</p>
+</div>
+<p><br/></p>
+<p>When the survey data have been loaded, you should select which
+variable will be the indicator to model, using the drop-down menu.
+<br/></p>
+<div class="figure">
+<img src="..//img//Tab2_Select_Variables.png" id="id" class="class"
+style="width:30.0%;height:30.0%" alt="" />
+<p class="caption">Indicator selection tab</p>
+</div>
+<p><br/></p>
+<p>Note that only binary variables are currently supported. Variables
+should be formatted as ‘0’ or ‘1’ only. Users should then select which
+variable represents the region or strata names in the data, as these
+will be used both in mapping and in creation of fixed or random effects.
+These region names should also be present and identically named in the
+census data to ensure accurate matching between the datasets.</p>
+<p><br/></p>
+<div class="figure">
+<img src="..//img//Tab2_Select_Survey_Spatial.png" id="id" class="class"
+style="width:30.0%;height:30.0%" alt="" />
+<p class="caption">Survey area names</p>
+</div>
+<p><br/></p>
+</div>
+<div id="census" class="section level2">
+<h2>Census</h2>
+<p>When selecting the census tab, default the map and table information
+will take some time to load as the datasets are larger. <br/></p>
+<div class="figure">
+<img src="..//img//Census_Tab.png" id="id" class="class"
+style="width:50.0%;height:50.0%" alt="" />
+<p class="caption">The Census tab controls upload and structuring of
+census data</p>
+</div>
+<p><br/></p>
+<p>After the survey data are loaded, Census data should be loaded in a
+similar way. Note that the census data should include both the same
+survey stratum names as the survey data, as well as an additional
+spatial stratum representing the area at which predictions will be
+made.</p>
+<div class="figure">
+<img src="..//img//Tab2_Select_Census_Spatial.png" id="id" class="class"
+style="width:30.0%;height:30.0%" alt="" />
+<p class="caption">Census spatial area selection</p>
+</div>
+<p><br/></p>
+<p>Users then can select the predictor variables that will be. Note that
+only predictors that appear in both survey and census data can be
+selected. To reduce confusion, it is best that the loaded data only
+include variables that will be relevant to the analysis. However, these
+variables can be removed later if they are not needed.</p>
+<div class="figure">
+<img src="..//img//Tab2_Select_Predictors.png" id="id" class="class"
+style="width:30.0%;height:30.0%" alt="" />
+<p class="caption">Select predictor variables</p>
+</div>
+<hr />
+</div>
+</div>
+<div id="compare-data" class="section level1">
+<h1>Compare Data</h1>
+<p>Predictive modeling of small areas based on survey data relies on the
+assumption that the populations sampled in the survey are a random
+sample of the census. As such, the types of respondents in census and
+survey data should be present in similar ratios for each. Therefore,
+before modeling the indicator of interest, it is important to compare
+the distribution in each.</p>
+<p><br/></p>
+<div id="correlations" class="section level2">
+<h2>Correlations</h2>
+<p>A simple way to check whether the two data types are related is to
+look at how closely they are correlated. This can be difficult to do
+with binary data, so we aggregate these data at the level of survey
+regions and visualize as a scatterplot. By default these correlations
+are only shown for variables checked in the ‘Data Selection’ tab.</p>
+<p>When opening the <strong>Compare data</strong> Tab, the first tab
+displays a scatterplot of the correlations between data variables. These
+plots are based on data aggregated at the survey region level. Variables
+that appear linearly correlated between survey and census shold be
+considered for inclusion in the model. Those that are not should be
+excluded, unless there is some reason to explicitly include them.</p>
+<div class="figure">
+<img src="..//img//Tab3_Compare_Distributions.png" id="id" class="class"
+style="width:50.0%;height:50.0%" alt="" />
+<p class="caption">Scatterplot of distributions of variables at survey
+region level</p>
+</div>
+<p><br/></p>
+</div>
+<div id="distributions." class="section level2">
+<h2>Distributions.</h2>
+<p>For a closer look at individual predictors, in the distributions tab
+we look more closely at the distributions of individual variables to see
+how different levels of each variable correlate. Use the drop-down menu
+to select which variable to view. Here we can look more closely at the
+different levels of each variable.</p>
+<p><br/></p>
+<div class="figure">
+<img src="..//img//Tab3_Barplot_Scatterplot.png" id="id" class="class"
+style="width:50.0%;height:50.0%" alt="" />
+<p class="caption">Barplots and scatterplots of individual variables</p>
+</div>
+<p><br/></p>
+</div>
+<div id="spatial" class="section level2">
+<h2>Spatial</h2>
+<p>Finally, it’s important that the spatial distribution of effort is
+similar in survey and census data. The map in the spatial section shows
+the relative effort applied in each survey region. <br/></p>
+<div class="figure">
+<img src="..//img//Tab3_Spatial_Distribution.png" id="id" class="class"
+style="width:50.0%;height:50.0%" alt="" />
+<p class="caption">Spatial distribution of sampling effort</p>
+</div>
+<hr />
+<p><br/></p>
+</div>
+</div>
+<div id="model-setup" class="section level1">
+<h1>Model Setup</h1>
+<p>The model setup tab provides tools to further check the suitability
+of variables for prediction before building the model. The model
+building component then allows you to see how inclusion of different
+parameters influences the model outcome. <br/></p>
+<div class="figure">
+<img src="..//img//Tab4_Models.png" id="id" class="class"
+style="width:50.0%;height:50.0%" alt="" />
+<p class="caption">Model building tab</p>
+</div>
+<p><br/> ## Parameter Tests The parameter tests component uses alias
+testing and variance inflation factors to look for variables that are
+highly correlated with one another. The Alias test button looks for
+variables that are perfectly correlated, and must be run before the
+Collinearity or Variance Inflation Factors (VIF) test. The VIF test
+checks each variable for variance inflation. Run the Alias test first,
+as the VIF test cannot run on variables that are nearly identical.<br />
+<br/></p>
+<div class="figure">
+<img src="..//img//Tab4_Aliasing.png" id="id" class="class"
+style="width:30.0%;height:30.0%" alt="" />
+<p class="caption">Alias test button</p>
+</div>
+<p>The results of the Alias test will indicate whether there are
+variables that need removing from the candidate variable set. <br/></p>
+<p><img src="..//img//Tab4_Alias_test.png" id="id" class="class"
+style="width:50.0%;height:50.0%" alt="Alias reporting" /> <br/></p>
+<p>When variables are identified in the Alias test, you can remove them
+from the list of parameters <br/></p>
+<div class="figure">
+<img src="..//img//Tab4_Exclude_Parameters.png" id="id" class="class"
+style="width:30.0%;height:30.0%" alt="" />
+<p class="caption">Removal of ‘mother tongue’ as a predictor</p>
+</div>
+<p>After removing the indicated variables from the list of predictors,
+you should re-run the alias test, then you can run the VIF test to test
+for collinearity. <br/></p>
+<div class="figure">
+<img src="..//img//Tab4_Collinearity_Button.png" id="id" class="class"
+style="width:30.0%;height:30.0%" alt="" />
+<p class="caption">Collinearity button</p>
+</div>
+<p>In the VIF test, results show a GVIF score and a degrees of freedom
+(DF). Variables that have a GVIF score of higher than 2 should be
+removed also, as including them may lead to unexpected predictions.
+<br/></p>
+<p><img src="..//img//Tab4_VIF_Result.png" id="id" class="class"
+style="width:60.0%;height:60.0%"
+alt="Variance Inflation Factor results" /> <br/></p>
+<div id="build-the-model" class="section level2">
+<h2>Build the Model</h2>
+<p>Once the Variance inflation test has been done, you can proceed to
+building the model by selecting the ‘Build the Model’. By default, the
+model consists of all variables that were not deselected in previous
+steps. As well, the spatial regions are by default included as a fixed
+effect.<br />
+<br/></p>
+<p><img src="..//img//Tab4_Model_Formula.png" id="id" class="class"
+style="width:60.0%;height:60.0%" alt="Model formula" /> <br/></p>
+<p>The model results are displayed as a summary table. In this summary,
+the estimates of the model coefficients are displayed on the logit
+scale, along with other statistics. Significance of each coefficient is
+indicated with stars, where * = significance at p=0.05, ** =
+significance at p=0.01, *** = significance at p=0.001.</p>
+<p><img src="..//img//Tab4_Model_Summary.png" id="id" class="class"
+style="width:60.0%;height:60.0%" alt="Model summary table" /> <br/></p>
+<p>Every time a variable is added, the model is re-run, and a new
+summary table is built. If you wish to save the results of a particular
+model, you can save them using the download button.<br />
+<br/></p>
+<div id="stepwise-regression." class="section level3">
+<h3>Stepwise Regression.</h3>
+<p>While you may have predictors that you wish to include, but it may be
+difficult to decide which combination of variables is best to use. In
+this case, you may use the stepwise variable selection button to choose
+the most parsimonious set of variables. The tool uses both forward and
+backwards stepwise selection, and retains the model with the lowest AIC
+score. The selected variables will remain checked in the list.<br />
+<br/></p>
+<div class="figure">
+<img src="..//img//Tab4_Stepwise_Button.png" id="id" class="class"
+style="width:30.0%;height:30.0%" alt="" />
+<p class="caption">Stepwise selection button</p>
+</div>
+</div>
+<div id="random-effects" class="section level3">
+<h3>Random effects</h3>
+<p>Because the sampling effort in each of the survey regions can often
+be different, treating thema s a fixed effect may not be the most
+reliable way to account for regional variations. Instead, it is possible
+to include spatial regions as a random effect. In this way, oversampling
+in some areas will not skew results, and the uncertainty in estimates
+will be properly accounted for. Checking the ‘include random effects’
+box will change the fixed effects to random effects in the model.<br />
+<br/></p>
+<p><img src="..//img//Tab4_Include_Rxf.png" id="id" class="class"
+style="width:30.0%;height:30.0%" alt="Random effect button" /> <br/></p>
+<p>Note that including random effects in the model will make it much
+slower to run. It is best to first run the variable selection before
+including the random effect term.<br />
+<br/></p>
+</div>
+</div>
+</div>
+<div id="assessment-of-model-fit" class="section level1">
+<h1>Assessment of model fit</h1>
+<p>Following fitting of the model, it is important to check whether the
+model fit is suitable <br/></p>
+<div id="assessment" class="section level2">
+<h2>Assessment</h2>
+<p>The ‘Assess’ tab two a few ways to check the fit of the model. The
+first is the residual plot, which shows each of the predicted response
+values used in the model against the difference between the observed and
+predicted values. A model that has equal dispersion of points above and
+below the line indicates an unbiased fit. <br/></p>
+<p><img src="..//img//Tab5_Residplot.png" id="id" class="class"
+style="width:50.0%;height:50.0%" alt="Plot of model residuals" />
+<br/></p>
+<p>We can also look at howthe observed values compare to the fitted
+values. With binary variables this can be challenging to intepret, se we
+can look at observed and predicted values aggregated in survey regions.
+Note that because we have included survey regions as a fixed or random
+effect, we expect that the model will usually perform very well at this
+aggregated level. <br/></p>
+<div class="figure">
+<img src="..//img//Tab5_Obs_vs_pred.png" id="id" class="class"
+style="width:50.0%;height:50.0%" alt="" />
+<p class="caption">Observed verus predicted outcomes aggregated at
+survey region level</p>
+</div>
+</div>
+</div>
+<div id="validation" class="section level1">
+<h1>Validation</h1>
+<p>Another way to evaluate the predictive power for binomial random
+variables in a logistic model is to look at the percentage of times the
+model correctly classifies the response variable. A Confusion matrix
+describes the percentage of time the model correctly predicts a true
+positive or true negative. A better-performing model should have higher
+true positive and negative rates than false rates. <br/></p>
+<p><img src="..//img//Tab5_Confusion.png" id="id" class="class"
+style="width:50.0%;height:50.0%"
+alt="A confusion matrix showing the rate of true positives and negatives" />
+<br/></p>
+<p>Another way to look at model performance is to examine the
+receiver-operator curve or ROC. This curve plots ‘Sensitivity’ against
+‘Specificity’, which can be described as the rate of false positives (y
+axis) at each level of true positivity (x axis). An ROC curve that is
+more convex (or farther from the diagonal) suggests better model
+performance. The area under the ROC curve (or AUC) provides a measure of
+the model accuracy; an AUC of 0.5 means the model cannot predict with
+any accuracy, while an AUC means it is perfectly accurate. Values of
+greater than 0.75 suggest relatively good model performance.<br />
+<br/></p>
+<p><img src="..//img//Tab5_ROC.png" id="id" class="class"
+style="width:50.0%;height:50.0%" alt="The Receiver-Operator Curve" />
+<br/></p>
+<div id="cross-validation" class="section level2">
+<h2>Cross Validation</h2>
+<p>Finally, the goal of small area prediction is to predict data into
+areas that have not been sampled. The most effective way to tell whether
+a model is reliable in this case is to perform croass-validation
+testing. Here, we randonly split the data into sections called ‘Folds’.
+In each iteration of the cross-validation, one of these folds is
+excluded from the main data (the testing data), then the remaining data
+are used to build the model (the training data). The resulting model is
+then used to predict the indicator of interest in both sets of data with
+similar accuracy.<br />
+<br/></p>
+<div class="figure">
+<img src="..//img//Tab5_Cross_Validate.png" id="id" class="class"
+style="width:50.0%;height:50.0%" alt="" />
+<p class="caption">Results of the cross validation. Similar AUC scores
+in the training and test data indicate the model is relatively
+stable.</p>
+</div>
+</div>
+</div>
+<div id="prediction" class="section level1">
+<h1>Prediction</h1>
+<p>Now that we have assessed the model, we can use it to predict into
+the census data using the same predictor variables. The predictions tab
+does this, plotting the predictions at census scale, then survey region
+scale, then finally with direct estimates. In the tabular data section,
+the predictions are aggregated at both survey and census scales. A
+bootstrapped 95% confidence interval is also calculated for each
+region.</p>
+<div class="figure">
+<img src="..//img//Tab6_Prediction.png" alt="" />
+<p class="caption">Tabular results</p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

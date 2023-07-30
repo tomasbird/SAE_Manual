@@ -1,2 +1,2 @@
 # SAE_Manual
-MAnual for small area estimation tool
+Manual for small area estimation tool
