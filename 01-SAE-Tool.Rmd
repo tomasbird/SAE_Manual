@@ -12,6 +12,7 @@ Population demographic data found in international household surveys often use b
 At present, the app is not suitable for continuous response variables. Future iterations may provide this functionality. 
   
 <br/>
+
 ## How to use the application
 The application consists of different tabs for each stage of the analysis. These include selecting and comparing data, Setup of the models, model assessment and finally prediction. Under each tab, simple directions allow the user to control outputs and download results. Note that the contents of each tab depend on the previous tab results, so errors in data setup will propogate through the application and may result in error messages instead of expected results. 
   
