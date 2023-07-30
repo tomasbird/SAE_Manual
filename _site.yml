@@ -6,7 +6,7 @@ navbar:
       href: index.html
     - text: "SAE tool"
       href: 01-SAE-Tool.html
-output_dir: "."
+output_dir: "docs"
 output:
   html_document:
     theme: yeti
