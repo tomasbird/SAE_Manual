@@ -345,8 +345,8 @@ div.tocify {
 </div>
 
 
-<div id="analytic-approach" class="section level1">
-<h1>Analytic Approach</h1>
+<div id="about-the-tool" class="section level1">
+<h1>About the tool</h1>
 <p>Population demographic data found in international household surveys
 often use binary responses to estimate prevalence rates in populations.
 Because of this, the application uses a logistic regression modeling
@@ -357,7 +357,45 @@ others. For this reason, the application allows for use of a random
 effects model.</p>
 <p>At present, the app is not suitable for continuous response
 variables. Future iterations may provide this functionality.</p>
-<p><br/></p>
+</div>
+<div id="application-requirements" class="section level1">
+<h1>Application Requirements</h1>
+<p>The SAE tool is built in the R programming language as an R Shiny
+application. It is hosted in the <a
+href="https://github.com/unfpasae/SAEpackage">UNFPA github site</a>. At
+present it is only presented as a desktop tool which must be built on a
+user’s laptop and requires prior installation of both <a
+href="https://www.r-project.org/">R</a> and the <a
+href="https://posit.co/downloads/">RStudio</a> integrated development
+environment. Finally, you will need to have <a
+href="https://github.com/git-guides/install-git">Git installed</a>.</p>
+<div id="downloading-and-installing" class="section level2">
+<h2>Downloading and installing</h2>
+<p>The SAE tool is best installed from inside RStudio by cloning the
+UNFPA SAE github repository. Once R and RStudio are installed, as well
+as Git, you can follow the instructions below.</p>
+<ol style="list-style-type: decimal">
+<li>Open RStudio, click on file, New Project.</li>
+<li>In the new project wizard, select ‘Version Control’, then
+‘Git’.</li>
+<li>Type (or copy paste) the URL: “<a
+href="https://github.com/tomasbird/SAEpackage"
+class="uri">https://github.com/tomasbird/SAEpackage</a>” into the URL
+field, and select a directory location for the package and click ‘Create
+Project’. This will clone the current version of the application to your
+hard drive. This will download all the files, directories and data
+needed to run this demo.</li>
+<li>To open the project in RStudio, click on the ‘SAEpackage.Rproj’ file
+in your local directory.</li>
+<li>To prepare the App in Rstudio, write devtools::load_all() at the
+command prompt and hit enter.</li>
+<li>On the first loading of the App, Rstudio will probably take a long
+time downloading and installing other packages needed to run the App.
+This only happens the first time the app is run, please be patient.</li>
+<li>When the load has completed, type ‘SAEapp()’ to start the
+application</li>
+</ol>
+</div>
 <div id="how-to-use-the-application" class="section level2">
 <h2>How to use the application</h2>
 <p>The application consists of different tabs for each stage of the
