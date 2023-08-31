@@ -4,10 +4,10 @@ navbar:
   left:
     - text: "Home"
       href: index.html
-    - text: "SAE tool"
-      href: 01-SAE-Tool.html
     - text: "Harmonization"
-      href: 02-Harmonization.html
+      href: 01-Harmonization.html
+    - text: "SAE tool"
+      href: 02-SAE-Tool.html
 output_dir: "docs"
 output:
   html_document:

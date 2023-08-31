@@ -1,8 +1,6 @@
----
 
----
 
-# Harmonization
+# Harmonization of DHS and census data
 
 This manual provides a step-by-step guide to harmonizing census and survey data for the purposes of small area estimation (SAE). More specifically, we describe how to create harmonized files of census data from IPUMS International (IPUMSI) and survey data from Demographic and Health Surveys (DHS). These harmonized data files can subsequently be used to construct SAE models for DHS indicator variables.
 
