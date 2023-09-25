@@ -10,11 +10,9 @@ Population demographic data found in international household surveys often use b
 
 At present, the app is not suitable for continuous response variables. Future iterations may provide this functionality. 
 
-# Application Requirements
-The SAE tool is built in the R programming language as an R Shiny application. It is hosted in the [UNFPA github site](https://github.com/unfpasae/SAEpackage).  At present it is only presented as a desktop tool which must be built on a user's laptop and requires prior installation of both [R](https://www.r-project.org/) and the [RStudio](https://posit.co/downloads/) integrated development environment. Finally, you will need to have [Git installed](https://github.com/git-guides/install-git). 
 
 ## Downloading and installing
-The SAE tool is best installed from inside RStudio by cloning the UNFPA SAE github repository. Once R and RStudio are installed, as well as Git, you can follow the instructions below. 
+The SAE tool is best installed from inside RStudio by cloning the [UNFPA github site](https://github.com/unfpasae/SAEpackage). Once R and RStudio are installed, as well as Git, you can follow the instructions below. 
 
 1. Open RStudio, click on file, New Project.
 2. In the new project wizard, select 'Version Control', then 'Git'.

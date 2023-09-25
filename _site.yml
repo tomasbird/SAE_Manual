@@ -8,6 +8,8 @@ navbar:
       href: 01-Harmonization.html
     - text: "SAE tool"
       href: 02-SAE-Tool.html
+    - text: "Geospatial SAE"
+      href: 03-sae-geospatial.html
 output_dir: "docs"
 output:
   html_document:

@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Ghana Unit Level Modeling Document</title>
+
+<script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">HOME</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="01-Harmonization.html">Harmonization</a>
+</li>
+<li>
+  <a href="02-SAE-Tool.html">SAE tool</a>
+</li>
+<li>
+  <a href="03-sae-geospatial.html">Geospatial SAE</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Ghana Unit Level Modeling Document</h1>
+
+</div>
+
+
+<div id="preamble" class="section level1">
+<h1>Preamble</h1>
+<div id="r-packages" class="section level2">
+<h2>R packages</h2>
+<p>The required R packages are explicitly listed here.</p>
+<pre class="r"><code>library(raster)
+library(forcats)
+library(ggmap)
+library(lme4)
+library(nlme)
+library(pander)
+library(haven)
+library(knitr)
+library(fields)
+library(rgdal)
+library(sf)
+library(randomForest)
+library(tidyverse)</code></pre>
+</div>
+</div>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<div id="introduction-1" class="section level2">
+<h2>Introduction</h2>
+<p>To meet the high demand on the geographic dis-aggregation of key
+indicators, UNFPA Small Area Estimation (SAE) work has initially focused
+on the combination of census data and survey data. But to be rigorously
+valid, one necessary condition is that both the survey and the census
+should be carried out at the same moment so that the distributions of
+the variables from the survey converge toward their census counterpart.
+But in the real world, the census is generally “old” and the survey data
+contemporaneous. In this more frequent situation, the method suffers
+from different biases that have been pointed out by numerous authors
+(Tarozzi &amp; Deaton, 2009; Molina &amp; Rao 2010; Nguyen, 2012). So a
+new SAE approach needs to be developed for the countries without recent
+census data available. This document describes a method that fills this
+gap by relying only on the survey Data and borrowing strength from the
+spatial correlation within the sample.</p>
+<p>This document describes the detailed steps for unit level model small
+area estimation. Each step is accompanied with the associated R code,
+followed by the detailed description for the code. The Ghana DHS data is
+taken as the example.</p>
+</div>
+<div id="unsae-package" class="section level2">
+<h2><code>unsae</code> package</h2>
+<ul>
+<li><p>Modeling requires an R package called <code>unsae</code>
+available on <a
+href="https://github.com/ydhwang/unsae">here</a>.</p></li>
+<li><p>The development of <code>unsae</code> package has been complete,
+yet documentation may not be fully provided.</p></li>
+<li><p>To install <code>unsae</code>, run the following code:</p></li>
+</ul>
+<pre class="r"><code>devtools::install_github(&quot;ydhwang/unsae&quot;)</code></pre>
+<p>Then it can be loaded by running:</p>
+<pre class="r"><code>library(unsae)</code></pre>
+<ul>
+<li>In case the software returns that it could when seeing the
+<code>could not find function</code> error messages or something
+similar, it means the package may have been updated. So you need to run
+the <code>devtools::install_github("ydhwang/unsae")</code> again</li>
+</ul>
+</div>
+</div>
+<div id="data-preparation" class="section level1">
+<h1>Data preparation</h1>
+<div id="description" class="section level2">
+<h2>Description</h2>
+<ul>
+<li>This section illustrates the data preparation steps for the unit
+level model.</li>
+<li>Throughout, we assume that the data files are stored in
+<code>../data/</code> (locations are all relative).</li>
+<li>Alternatively, one can use <code>file.choose()</code> and locate the
+file manually.</li>
+</ul>
+</div>
+<div id="dhs-data-loading" class="section level2">
+<h2>DHS Data loading</h2>
+<ul>
+<li>Detailed description of DHS data can be found at <a
+href="https://dhsprogram.com/pubs/pdf/DHSG4/Recode7_DHS_10Sep2018_DHSG4.pdf">DHS
+site</a>.</li>
+<li>DHS data files are assumed to be stored in
+<code>../data/2011 DHS/</code>.</li>
+<li>For Ghana case,
+<ul>
+<li><code>GHHR72FL.SAV</code>: individual data</li>
+<li><code>GHIR72FL.SAV</code>: Household data</li>
+</ul></li>
+<li>We use <code>haven::read_sav</code> function to read the data files
+stored in <code>SAV</code> format.</li>
+</ul>
+</div>
+<div id="individual-level-data-handling" class="section level2">
+<h2>Individual level data handling</h2>
+<ul>
+<li>Artifact of converting SPSS <code>SAV</code> file to “flattened”
+data table form can be removed by choosing the variables that don’t have
+“$” in their names.</li>
+<li>They are excluded from the analysis. In the code, it looks for
+<code>$</code> string and excludes them from the data set.</li>
+</ul>
+<blockquote>
+<p>Multiple occurrence variables are placed one after the other by
+occurrence; all variables for occurrence 1 precede all variables for
+occurrence 2 and so on; multiple occurrence variables have a numeric
+sub- index that indicate the occurrence number.</p>
+</blockquote>
+</div>
+<div id="selection-of-the-variables-1" class="section level2">
+<h2>Selection of the variables (1)</h2>
+<ul>
+<li>Some information can be difficult to use, so removed from the
+analysis.</li>
+<li><code>V003</code> is the Respondent’s line number in the household
+schedule, so removed from the analysis.</li>
+</ul>
+<pre class="r"><code>indiv_ini &lt;- read_sav(&quot;sae-geospatial/data/2011 DHS/GHIR72FL.SAV&quot;)   
+indiv &lt;- indiv_ini %&gt;% select(!matches(&quot;[\\$]&quot;)) %&gt;% 
+  select(-V000) %&gt;% # same country 
+  select(-V003) </code></pre>
+</div>
+<div id="selection-of-the-variables-2" class="section level2">
+<h2>Selection of the variables (2)</h2>
+<pre class="r"><code>indiv &lt;- indiv %&gt;% select_if(function(x) mean(is.na(x)) &lt; 0.3)</code></pre>
+<ul>
+<li>For the purpose of SAE, the variables with too high missing rate are
+not useful. Hence we exclude those with less than 30 % missing.</li>
+<li>We can see that 4079 columns are reduced to 405.</li>
+<li>It’s important to notice that in the real world, one should handle
+the missing variable problem one-by-one.</li>
+</ul>
+</div>
+<div id="glimpse-of-the-data" class="section level2">
+<h2>Glimpse of the data</h2>
+<ul>
+<li>We can see the variable information here presented in Table
+label.</li>
+<li>Only first few are presented here.</li>
+</ul>
+<pre class="r"><code>info &lt;- lapply(indiv, function(x) attr(x, &quot;label&quot;))
+ind_var_tbl &lt;- tibble(COL = names(info), DESC = as.character(info)) 
+ind_var_tbl %&gt;% head %&gt;% pander</code></pre>
+<table style="width:51%;">
+<colgroup>
+<col width="12%" />
+<col width="38%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">COL</th>
+<th align="center">DESC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">CASEID</td>
+<td align="center">Case Identification</td>
+</tr>
+<tr class="even">
+<td align="center">V001</td>
+<td align="center">Cluster number</td>
+</tr>
+<tr class="odd">
+<td align="center">V002</td>
+<td align="center">Household number</td>
+</tr>
+<tr class="even">
+<td align="center">V004</td>
+<td align="center">Ultimate area unit</td>
+</tr>
+<tr class="odd">
+<td align="center">V005</td>
+<td align="center">Women’s individual sample weight (6 decimals)</td>
+</tr>
+<tr class="even">
+<td align="center">V006</td>
+<td align="center">Month of interview</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="household-level" class="section level2">
+<h2>Household level</h2>
+<p>We first conduct the data cleaning for household data in a similar
+manner.</p>
+<pre class="r"><code>household_ini &lt;- read_sav(&quot;sae-geospatial/data/2011 DHS/GHHR72FL.SAV&quot;)
+household &lt;- household_ini %&gt;% select(!matches(&quot;[\\$]&quot;))</code></pre>
+</div>
+<div id="renaming" class="section level2">
+<h2>Renaming</h2>
+<pre class="r"><code>household &lt;- household %&gt;% 
+  rename(V000 = HV000, V001 = HV001, V002 = HV002, V003 = HV003, V004 = HV004)</code></pre>
+<p>The matching key information can be found in <code>HV000</code>,
+<code>HV001</code>, <code>HV0002</code>, <code>HV003</code>,
+<code>HV004</code>. They are renamed to be used for joining with the
+individual data table.</p>
+<ul>
+<li>HV000 Country code and phase<br />
+</li>
+<li>HV001 Cluster number<br />
+</li>
+<li>HV002 Household number<br />
+</li>
+<li>HV003 Respondent’s line number (answering Household
+questionnaire)</li>
+<li>HV004 Ultimate area unit</li>
+</ul>
+</div>
+<div id="selection-of-the-variables-3" class="section level2">
+<h2>Selection of the variables (3)</h2>
+<pre class="r"><code>household &lt;- household %&gt;% select_if(function(x) mean(is.na(x)) &lt; 0.3) %&gt;% select(-V000) %&gt;% 
+  select(-V003) # same country</code></pre>
+<p>Same missing rules are applied to select the relevant variables. We
+can see that 3028 columns are reduced to 142.</p>
+</div>
+<div id="glimpse-of-the-data-1" class="section level2">
+<h2>Glimpse of the data</h2>
+<p>Similarly to the individual data, only first few are presented
+here.</p>
+<pre class="r"><code>info &lt;- lapply(household, function(x) attr(x, &quot;label&quot;))
+house_var_tbl &lt;- tibble(COL = names(info), DESC = as.character(info)) 
+house_var_tbl %&gt;% head %&gt;% pander</code></pre>
+<table style="width:51%;">
+<colgroup>
+<col width="11%" />
+<col width="40%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">COL</th>
+<th align="center">DESC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">HHID</td>
+<td align="center">Case Identification</td>
+</tr>
+<tr class="even">
+<td align="center">V001</td>
+<td align="center">Cluster number</td>
+</tr>
+<tr class="odd">
+<td align="center">V002</td>
+<td align="center">Household number</td>
+</tr>
+<tr class="even">
+<td align="center">V004</td>
+<td align="center">Ultimate area unit</td>
+</tr>
+<tr class="odd">
+<td align="center">HV005</td>
+<td align="center">Household sample weight (6 decimals)</td>
+</tr>
+<tr class="even">
+<td align="center">HV006</td>
+<td align="center">Month of interview</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="joining-the-individual-and-household-data"
+class="section level2">
+<h2>Joining the individual and household data</h2>
+<ul>
+<li>We combine the individual data set and household data to create
+<code>dhs_expanded</code>.</li>
+<li>We join the individual and household data sets by using
+<code>V000</code>, <code>V001</code>, <code>V0002</code>,
+<code>V003</code>, <code>V004</code> as key variables.</li>
+</ul>
+<pre class="r"><code>dhs_expanded &lt;- left_join(indiv, household, by = c(&quot;V001&quot;, &quot;V002&quot;, &quot;V004&quot;)) %&gt;% 
+  arrange(V001) </code></pre>
+<blockquote>
+<p><code>HV004</code>: Ultimate area unit is a number assigned to each
+sample point to identify the ultimate area units used in the collection
+of data. This variable is usually the same as the cluster number, but
+may be a sequentially numbered variable for samples with a more
+complicated structure.</p>
+</blockquote>
+</div>
+<div id="data-modification" class="section level2">
+<h2>Data modification</h2>
+<ul>
+<li><code>V218</code> Number of living children; convert it into three
+categories and rename it as <code>V218R</code></li>
+<li><code>V013</code>: Age in 5-year groups; convert it into three
+categories and rename it as <code>V013R</code></li>
+</ul>
+<pre><code>V218R
+         0        1-2        3-4 5 and more 
+         0          1          3          5 
+
+V013R
+15-24 25-34 35-49 
+    1     2     3 </code></pre>
+</div>
+<div id="conversion" class="section level2">
+<h2>Conversion</h2>
+<p>The age group variables are re-coded into a fewer categories.</p>
+<pre class="r"><code>dhs_expanded &lt;- dhs_expanded %&gt;% mutate(V013R = 
+                         ifelse(V013 %in% 1:2, 1, 
+                                ifelse(V013 %in% 3:4, 2, 
+                                       ifelse(V013 &gt; 4, 3, V013))))
+
+dhs_expanded &lt;- dhs_expanded %&gt;% 
+  mutate(V218R = 
+           ifelse(V218 == 0, 0, ifelse(V218 == 1|V218 == 2, 1, 
+                                       ifelse(V218 ==3|V218 ==4, 3, 
+                                              ifelse(V218 &gt;=5, 5, V218)))))</code></pre>
+<pre class="r"><code>dhs_expanded &lt;- dhs_expanded %&gt;% select_if(function(x) mean(is.na(x)) &lt; 0.9) # remove if more than 10% missing</code></pre>
+<p>Additional steps followed to remove columns with too much missing
+info.</p>
+</div>
+<div id="defining-the-target-variables" class="section level2">
+<h2>Defining the target variables</h2>
+<ul>
+<li>Contraceptive prevalence rate (CPR) - using <code>V313</code>:
+combine 1, 2, 3 as “Yes”; 0 as “No.</li>
+<li>Modern contraceptive prevalence rate (CPRm) - using
+<code>V313</code>: combine 0, 1, 2, 3 as “No”; 3 as “Yes”.</li>
+<li>Unmet need for family planning rate (UNR) - using <code>V626</code>:
+combining 1, 2 as “Yes” (unmet need for family planning); combining all
+other answers as “No”.</li>
+</ul>
+<pre class="r"><code>dhs_reduced &lt;- 
+dhs_expanded %&gt;% 
+  select(V013R, V106, V218R, V025, V120, V127, V128, V128, V129, V113, 
+         V001, V005, # survey info part
+                   V119,
+                   HV206, 
+                   V130, 
+                   V116,
+                   V151,
+                   V150, 
+                   V626, V313) %&gt;% 
+  mutate(CPR = ifelse(V313 == 0, 0, 1)) %&gt;% 
+  mutate(CPRm = ifelse(V313 == 3, &quot;Yes&quot;, &quot;No&quot;)) %&gt;% 
+  mutate(UNR = ifelse(V626 == 1|V626 == 2, &quot;Yes&quot;, &quot;No&quot;)) %&gt;% 
+  select(-V313, -V626)
+
+dhs_reduced  &lt;- dhs_reduced %&gt;% 
+  mutate_all(as_factor) %&gt;% 
+  mutate(V218R = ifelse(V218R == &quot;5 and more&quot;|V218R == &quot;3-4&quot;,
+                        &quot;3 or more&quot;, V218R)) 
+
+attr(dhs_reduced$V218R, &quot;label&quot;) &lt;- attr(dhs_expanded$V218, &quot;label&quot;)</code></pre>
+</div>
+<div id="quick-screeing-of-key-variables" class="section level2">
+<h2>Quick screeing of key variables</h2>
+<ul>
+<li>This step is quickly screen the important variables found based on a
+machine learning based method.</li>
+<li>The example below shows the case where
+<code>V013R, V106, V218R, V025, V120, V127, V128, V128, V129, V113, V119, HV206, V130, V116, V151, V150</code>
+are used as the candidates, and choose the seemingly important six
+variables among them.</li>
+<li>To see the detail about the metric, see <a
+href="https://en.wikipedia.org/wiki/Random_forest#Variable_importance">this</a>.</li>
+</ul>
+<pre class="r"><code>temp_set &lt;- dhs_reduced %&gt;% na.omit
+temp_rf &lt;- randomForest(CPR ~ V013R + V106 + V218R + V025 + V120 + V127 + V128 + V128 + V129 + V113 + V119 + 
+                          HV206 + V130 + V116 + V151 + V150, data = temp_set)
+imp_tbl &lt;- tibble(imp = as.numeric(importance(temp_rf)), key = rownames(importance(temp_rf))) %&gt;% mutate(q = rank(-imp))
+selected_06 &lt;- imp_tbl %&gt;% filter(q  &lt;= 6) %&gt;% arrange(-imp)
+info_v &lt;- lapply(temp_set, function(x) attr(x, &quot;label&quot;)) %&gt;% bind_rows %&gt;% gather
+left_join(selected_06, info_v, by = &quot;key&quot;) %&gt;% select(-imp) %&gt;% pander()</code></pre>
+<table style="width:56%;">
+<colgroup>
+<col width="11%" />
+<col width="5%" />
+<col width="38%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">key</th>
+<th align="center">q</th>
+<th align="center">value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">V113</td>
+<td align="center">1</td>
+<td align="center">Source of drinking water</td>
+</tr>
+<tr class="even">
+<td align="center">V130</td>
+<td align="center">2</td>
+<td align="center">Religion</td>
+</tr>
+<tr class="odd">
+<td align="center">V128</td>
+<td align="center">3</td>
+<td align="center">Main wall material</td>
+</tr>
+<tr class="even">
+<td align="center">V116</td>
+<td align="center">4</td>
+<td align="center">Type of toilet facility</td>
+</tr>
+<tr class="odd">
+<td align="center">V127</td>
+<td align="center">5</td>
+<td align="center">Main floor material</td>
+</tr>
+<tr class="even">
+<td align="center">V218R</td>
+<td align="center">6</td>
+<td align="center">Number of living children</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="additional-steps-to-simplify-the-data-1"
+class="section level2">
+<h2>Additional steps to simplify the data (1)</h2>
+<ul>
+<li>Many problems are caused when we carry variables with too many
+categories, where many categories have few counts.</li>
+<li><code>fct_lump_prop</code> combines levels that appear less than 10
+% and create a new category named “Other”.</li>
+</ul>
+<pre class="r"><code>target &lt;- selected_06$key
+reduced_tbl &lt;- 
+  temp_set %&gt;% 
+  mutate_if(function(x) n_distinct(x) &lt; 20, as.factor) %&gt;% 
+  mutate_at(all_of(target), function(x) fct_lump_prop(x, 0.1, other_level = &quot;Other&quot;))  </code></pre>
+</div>
+<div id="additional-steps-to-simplify-the-data-2"
+class="section level2">
+<h2>Additional steps to simplify the data (2)</h2>
+<ul>
+<li><code>reduced_tbl</code> now has columns with fewer categories after
+lumping levels with less than 10% proportion.</li>
+<li>As a comparison,</li>
+</ul>
+<pre class="r"><code>temp_set %&gt;% group_by(V130) %&gt;% tally %&gt;% pander</code></pre>
+<table style="width:47%;">
+<colgroup>
+<col width="37%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">V130</th>
+<th align="center">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">Catholic</td>
+<td align="center">1341</td>
+</tr>
+<tr class="even">
+<td align="center">Anglican</td>
+<td align="center">72</td>
+</tr>
+<tr class="odd">
+<td align="center">Methodist</td>
+<td align="center">547</td>
+</tr>
+<tr class="even">
+<td align="center">Presbyterian</td>
+<td align="center">513</td>
+</tr>
+<tr class="odd">
+<td align="center">Pentecostal/charismatic</td>
+<td align="center">3456</td>
+</tr>
+<tr class="even">
+<td align="center">Other Christian</td>
+<td align="center">1239</td>
+</tr>
+<tr class="odd">
+<td align="center">Islam</td>
+<td align="center">1726</td>
+</tr>
+<tr class="even">
+<td align="center">Traditional/spiritualist</td>
+<td align="center">226</td>
+</tr>
+<tr class="odd">
+<td align="center">No religion</td>
+<td align="center">273</td>
+</tr>
+<tr class="even">
+<td align="center">Other</td>
+<td align="center">1</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>reduced_tbl %&gt;% group_by(V130) %&gt;% tally %&gt;% pander</code></pre>
+<table style="width:46%;">
+<colgroup>
+<col width="36%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">V130</th>
+<th align="center">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">Catholic</td>
+<td align="center">1341</td>
+</tr>
+<tr class="even">
+<td align="center">Pentecostal/charismatic</td>
+<td align="center">3456</td>
+</tr>
+<tr class="odd">
+<td align="center">Other Christian</td>
+<td align="center">1239</td>
+</tr>
+<tr class="even">
+<td align="center">Islam</td>
+<td align="center">1726</td>
+</tr>
+<tr class="odd">
+<td align="center">Other</td>
+<td align="center">1632</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>This “lumping” process improves overall model fitting by removing
+the (near-) singularity of the model matrix.</li>
+<li>The model selection step is automated in the code below.</li>
+</ul>
+</div>
+<div id="automatic-model-fitting" class="section level2">
+<h2>Automatic Model fitting</h2>
+<pre class="r"><code># automation of this needs a carefully examined set of the variables
+fe_form &lt;- paste(selected_06$key, collapse = &quot; + &quot;)
+full_form &lt;- as.formula(paste(&quot;CPR ~ &quot;, fe_form, &quot;+ (1|V001)&quot;)) </code></pre>
+<pre class="r"><code># full model (with all data)
+model_out &lt;- glmer(formula = full_form, data = reduced_tbl, family = binomial(link = &quot;logit&quot;))</code></pre>
+<ul>
+<li>We use the selected 6 variables from the screening process.</li>
+<li>It automatically writes a formula taking <code>CPR</code> as our
+target indicator, and the survey cluster as a random effect.</li>
+<li>To see what’s the formula, see the following output of
+<code>full_form</code> (“full” formula including fixed effects and
+random effect).</li>
+</ul>
+<pre class="r"><code>print(full_form)</code></pre>
+<pre><code>## CPR ~ V113 + V130 + V128 + V116 + V127 + V218R + (1 | V001)</code></pre>
+<ul>
+<li>In this example, is used in <code>glmer</code>, generalized linear
+mixed effects model. Users can use this in the later part as a
+reference.</li>
+</ul>
+</div>
+</div>
+<div id="spatial-data-loading" class="section level1">
+<h1>Spatial data loading</h1>
+<div id="spatial-data-preparation" class="section level2">
+<h2>Spatial data preparation</h2>
+<ul>
+<li>We are loading the spatial part of DHS data for SAE.</li>
+<li>In this example, we use the geographic information set from <a
+href="https://dhsprogram.com/data/dataset/Ghana_Standard-DHS_2014.cfm?flag=0">DHS
+webpage</a>.</li>
+<li>It is assumed to be stored in the following location:</li>
+</ul>
+<pre class="r"><code>country_shp &lt;- st_read(&quot;sae-geospatial/data/2011 DHS/Spatial/GHGE71FL/GHGE71FL.shp&quot;, quiet = TRUE)</code></pre>
+</div>
+<div id="important-notes" class="section level2">
+<h2>Important Notes</h2>
+<ul>
+<li>There are some occasions in which cluster coordinate information is
+missing in survey data.</li>
+<li>It varies with the country, so the user needs to pay attention to
+the availability and other potential issues.</li>
+</ul>
+<pre class="r"><code>## handling missing coord
+mis_mark &lt;- country_shp %&gt;% filter((LATNUM == 0 &amp; LONGNUM ==0))
+country_shp &lt;- country_shp %&gt;% filter(!(LATNUM == 0 &amp; LONGNUM ==0)) %&gt;% filter(!is.na(LATNUM))</code></pre>
+</div>
+<div id="map-image-tiles-downloading" class="section level2">
+<h2>Map image tiles downloading</h2>
+<pre class="r"><code>bounding_box &lt;- st_bbox(country_shp) %&gt;% as.numeric  # getting the bounding box
+country_map &lt;- get_stamenmap(bbox = bounding_box, messaging = FALSE, zoom = 8, 
+                       maptype = &quot;toner-lite&quot;, format = c(&quot;png&quot;))
+ggmap(country_map, extent = &quot;device&quot;) </code></pre>
+<p><img src="03-sae-geospatial_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<ul>
+<li>To download the map image tiles, we first need to identify the
+bounding box of the (country) map.</li>
+<li>Once bounding box is found, the code below uses bounding box
+information to download the matching part of the image tiles.</li>
+<li><code>country_map</code> object will be used as a base layer for
+plotting in the remaining part.</li>
+</ul>
+</div>
+</div>
+<div id="model-fitting" class="section level1">
+<h1>Model fitting</h1>
+<div id="description-1" class="section level2">
+<h2>Description</h2>
+<p>In this section, we will describe the detail of the model fitting
+process.</p>
+</div>
+<div id="cluster-wise-estimate-naive" class="section level2">
+<h2>Cluster-wise estimate (naive)</h2>
+<ul>
+<li>One may consider a simple counting for each cluster.</li>
+<li>In the <code>reduced_tbl</code>, DHSCLUST information was stored as
+<code>V001</code> (see <a
+href="https://dhsprogram.com/pubs/pdf/DHSG4/Recode7_DHS_10Sep2018_DHSG4.pdf">DHS
+webpage</a>.)</li>
+</ul>
+<pre class="r"><code>reduced_tbl &lt;- reduced_tbl %&gt;%  
+  rename(DHSCLUST = V001) %&gt;% 
+  mutate(DHSCLUST = as.integer(DHSCLUST))</code></pre>
+<ul>
+<li>We group the data set by DHSCLUST, and calculate the statistics for
+each cluster.</li>
+<li>Depending on the needs, one may calculate the other statistics.</li>
+</ul>
+<pre class="r"><code>cluster_result &lt;- reduced_tbl %&gt;%  
+  group_by(DHSCLUST) %&gt;% 
+  summarize(Prop_raw = mean(CPRm == &quot;Yes&quot;)) </code></pre>
+<p>To see the first few clusters,</p>
+<table style="width:31%;">
+<colgroup>
+<col width="15%" />
+<col width="15%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">DHSCLUST</th>
+<th align="center">Prop_raw</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">0.03704</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">0.1429</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="center">0</td>
+</tr>
+<tr class="odd">
+<td align="center">5</td>
+<td align="center">0.1538</td>
+</tr>
+<tr class="even">
+<td align="center">6</td>
+<td align="center">0.2</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="removing-the-clusters-with-missing-coordinates"
+class="section level2">
+<h2>Removing the clusters with missing coordinates</h2>
+<ul>
+<li>We need to remove the clusters with missing coordinates.</li>
+<li>Then we create the table named <code>coord_info</code> of the
+coordinate information associated with the DHS data.</li>
+</ul>
+<pre class="r"><code>valid_set &lt;- anti_join(reduced_tbl, mis_mark, by = &quot;DHSCLUST&quot;) 
+coord_info &lt;- tibble(DHSCLUST = country_shp$DHSCLUST, lon = country_shp$LONGNUM, lat = country_shp$LATNUM) </code></pre>
+<ul>
+<li><code>coord_info</code> is a tibble with three columns –
+<code>DHSCLUST</code>, <code>lon</code>, <code>lat</code>. This tibble
+will be used to join the spatial coordinates to the survey data.</li>
+</ul>
+<pre class="r"><code>valid_set_with_sp &lt;- left_join(valid_set, coord_info, by = &quot;DHSCLUST&quot;)
+valid_set_with_sp &lt;- valid_set_with_sp %&gt;% 
+  mutate(DHSCLUST = as.factor(DHSCLUST))</code></pre>
+<ul>
+<li><code>valid_set_with_sp</code> now has spatial coordinates.</li>
+</ul>
+</div>
+<div id="model-fitting-1" class="section level2">
+<h2>Model fitting</h2>
+<ul>
+<li>We first consider the generalized linear mixed effects model without
+no spatial consideration, and store it as <code>mod_lme</code>.</li>
+<li>The model, however, has cluster random effect: <span
+class="math display">\[\begin{eqnarray}
+\eta &amp;=&amp; \mathbf{X} \boldsymbol{\beta} + \mathbf{Z}
+\mathbf{b},\\
+g(\cdot) &amp;=&amp; \textrm{link function},\\
+h(\cdot) &amp;=&amp; g^{-1}(\cdot) = \textrm{inverse link function},
+\end{eqnarray}\]</span> where <span
+class="math inline">\(\mathbf{b}\)</span> is independent cluster random
+effect term (with a diagonal covariance matrix, cov(<span
+class="math inline">\(\mathbf{b} = \sigma_b^2 \mathbf{I}\)</span>).</li>
+</ul>
+<pre class="r"><code>mod_lme &lt;- 
+glmer(CPR ~ 
+          V218R + V013R + (1 | DHSCLUST), 
+          family = binomial, 
+          data = valid_set_with_sp)</code></pre>
+</div>
+<div id="small-area-model-fitting" class="section level2">
+<h2>Small area model fitting</h2>
+<ul>
+<li>Now we can use <code>multilevel_EM</code>, which gives a spatial
+model.</li>
+</ul>
+<pre class="r"><code>spatial_model_fit &lt;- 
+  multilevel_EM(formula = &quot;CPR ~ V218R + V013R + (1 | DHSCLUST)&quot;,
+                data = valid_set_with_sp, coordinates = c(&quot;lon&quot;, &quot;lat&quot;))</code></pre>
+<pre><code>## ...EM iteration: 1 
+## ...EM iteration: 2 
+## ...EM iteration: 3</code></pre>
+<ul>
+<li>It needs three arguments:
+<ul>
+<li><code>formula</code>: (string) formula that follows
+<code>glmer</code> syntax. It only takes one random effects
+(cluster).</li>
+<li><code>data</code>: name of the data set.</li>
+<li><code>coordinates</code>: the name of coordinates within the data.
+These columns <em>should</em> exist within the data set provided.</li>
+<li>It often takes a while, so it prints out the number of EM iteration
+while it is being calculated.</li>
+</ul></li>
+</ul>
+</div>
+<div id="notes-on-multilevel_em" class="section level2">
+<h2>Notes on <code>multilevel_EM</code></h2>
+<ul>
+<li>Being different from <code>mod_lme</code> from <code>glmer</code>,
+<code>multilevel_EM</code> uses a spatial model for <span
+class="math inline">\(\mathbf{b}\)</span>; specifically, <span
+class="math display">\[
+\mathbf{b} \sim N(\mathbf{0}, \mathbf{C}),
+\]</span> where<br />
+<span class="math inline">\(\mathbf{b}=(b_1, b_2, \cdots,
+b_M)&#39;\)</span> and <span
+class="math inline">\(\mathbf{C}_n=(C_{ij})\)</span> with <span
+class="math display">\[
+C_{ij} =  \exp ( - \lambda \left\| \mathbf{s}_i - \mathbf{s}_j
+\right\|^2 ) + g \delta_{\mathbf{s}_i, \mathbf{s}_j}.
+\]</span></li>
+<li>For the detail, see the accompanied technical document.</li>
+</ul>
+</div>
+</div>
+<div id="preparing-the-admin-shape-file" class="section level1">
+<h1>Preparing the admin shape file</h1>
+<div id="raster-map" class="section level2">
+<h2>raster map</h2>
+<ul>
+<li>Unfortunately, there is no unified data source for different
+countries that handles country boundary files (note: DHS shapefile is
+the <em>points</em> for the survey locations).</li>
+<li>The example data used in this note is from <a
+href="https://spatialdata.dhsprogram.com/boundaries/#view=table&amp;countryId=GH">here</a>.</li>
+<li>Alternative files like <a
+href="https://data.humdata.org/dataset/cod-ab-gha">this</a> can be used,
+and yet <strong>shape files from other sources are not standardized, so
+user needs to be careful.</strong></li>
+</ul>
+</div>
+<div id="what-we-will-do" class="section level2">
+<h2>What we will do:</h2>
+<p>The code below does the following.</p>
+<ol style="list-style-type: decimal">
+<li>Import the shape file.</li>
+<li>Draw a map plot from the shape file (validation).</li>
+<li>Extract the admin border (level 1); however the levels are not the
+same across different countries.</li>
+<li>Create the grid over the country bounding box and then choose those
+overlapping with the country boundary.</li>
+<li>Draw a map plot from the grid (validation).</li>
+<li>Create <code>grid_coord</code>, with the coordinates assigned to
+each grid points.</li>
+</ol>
+</div>
+<div id="importing-the-shape-files" class="section level2">
+<h2>Importing the shape files</h2>
+<ul>
+<li>We first import the shapefiles, and then (visually) check the
+data.</li>
+<li>The shapefile contains the country border (not the small
+areas).</li>
+</ul>
+<pre class="r"><code>country_border &lt;- st_read(&quot;sae-geospatial/data/shps/sdr_subnational_boundaries.shp&quot;, quiet = TRUE)
+ggplot(country_border) + geom_sf()</code></pre>
+<p><img src="03-sae-geospatial_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+</div>
+<div id="creating-a-grid" class="section level2">
+<h2>Creating a grid</h2>
+<ul>
+<li>Now we create a grid so that we can use as a baseline for
+inference.</li>
+<li>We first create a coordinates grid as <a
+href="https://cran.r-project.org/web/packages/sf/vignettes/sf1.html">simple
+feature</a> then we convert it into a <code>tibble</code> so that we can
+use it with <code>spatial_model_fit</code>. The tibble is named
+<code>grid_coord</code>.</li>
+<li>Since we used <code>lon</code> and <code>lat</code> as the
+coordinates’ name, we need to rename <code>X</code> and <code>Y</code>
+to <code>lon</code> and <code>lat</code>.</li>
+</ul>
+<pre class="r"><code>grid &lt;- country_border %&gt;% st_make_grid(cellsize = 0.1, what = &quot;centers&quot;) %&gt;% st_intersection(country_border)  
+ggplot() + geom_sf(data = grid)</code></pre>
+<p><img src="03-sae-geospatial_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<pre class="r"><code>grid_coord &lt;- st_coordinates(grid) %&gt;% as_tibble() %&gt;% 
+  rename(lon = X, lat = Y)</code></pre>
+</div>
+<div id="prediction-based-on-resampling" class="section level2">
+<h2>Prediction based on resampling</h2>
+<ul>
+<li><p>Once <code>grid_coord</code> is available, the code below chooses
+the nearest 10% of the (survey) clusters for each grid, sample 40% of
+them, and make a prediction for each grid point using unit level model
+by treating the sampled survey as observed data.</p></li>
+<li><p>We want to get a set of predictions for each grid in
+<code>grid_coord</code>, so <code>for</code> loop runs over
+<code>grid_coord</code>.</p></li>
+<li><p>All clusters in DHS data are considered for each grid
+point.</p></li>
+<li><p>Once the loop is complete, it combines into a single
+<code>tibble</code> and then indexed for every grid point – named
+<code>grid_tbl</code>.</p></li>
+</ul>
+<pre class="r"><code>cluster_coord &lt;- coord_info %&gt;% dplyr::select(lon, lat) %&gt;% na.omit
+
+covariates_list &lt;- list()
+
+for (c_i in 1:nrow(grid_coord)){
+  cluster_dist_temp &lt;- coord_info
+  cluster_dist_temp$p_rank &lt;- rdist(cluster_coord, grid_coord[c_i,]) %&gt;% percent_rank()
+
+  chosen_coord &lt;- cluster_dist_temp %&gt;% filter(p_rank &lt;= 0.1) 
+  chosen_tbl &lt;- valid_set_with_sp %&gt;% filter(DHSCLUST %in% chosen_coord$DHSCLUST)
+  
+  covariates_list[[c_i]] &lt;-   chosen_tbl %&gt;% sample_frac(0.4) %&gt;% 
+    select(V013R, V218R, V119, HV206)
+
+}
+grid_coord$grid_index &lt;- 1:nrow(grid_coord) %&gt;% as.character()
+grid_samples &lt;- bind_rows(covariates_list, .id = &quot;grid_index&quot;)
+grid_tbl &lt;- left_join(grid_samples, grid_coord, by = &quot;grid_index&quot;)</code></pre>
+</div>
+<div id="creating-a-grid-map" class="section level2">
+<h2>Creating a grid map</h2>
+<ul>
+<li><code>grid_tbl</code> can be used to create a grid map.</li>
+<li>When predicting at a new location (not in the DHS survey),
+<code>predict_EM</code> function is used.</li>
+<li><code>predict_EM</code> is a wrapper taking two inputs: name of the
+spatial model obtained from and <code>multilevel_EM</code> and a new
+data set.</li>
+<li>New data set must have all the predictor variables used with
+<code>multilevel_EM</code>, as well as two coordinates (in this example,
+<code>lon</code> and <code>lat</code>).</li>
+</ul>
+</div>
+<div id="calculation-for-each-grid" class="section level2">
+<h2>Calculation for each grid</h2>
+<ul>
+<li>For each grid point, it uses the sampled survey data to make
+prediction.</li>
+<li>Then it aggregates all the prediction to get the average rate for
+each point.</li>
+</ul>
+<pre class="r"><code># this is grid level aggregation
+# predict function 
+
+g_index &lt;- grid_tbl$grid_index %&gt;% unique
+grid_tbl$yhat &lt;- NA
+
+for (g in seq_along(g_index)){
+  g_tbl &lt;- grid_tbl %&gt;% filter(grid_index == g_index[g])
+  grid_tbl$yhat[grid_tbl$grid_index == g_index[g]] &lt;- 
+    predict_em(spatial_model_fit, test_set = g_tbl)  
+}
+
+raster_tbl &lt;- grid_tbl %&gt;% 
+  group_by(lat, lon) %&gt;% 
+  summarise(m_yhat = mean(yhat), .groups = &quot;drop&quot;)</code></pre>
+</div>
+<div id="plotting" class="section level2">
+<h2>Plotting</h2>
+<p>Plotting the grid points.</p>
+<pre class="r"><code>ggplot(raster_tbl) + aes(y = lat, x = lon, colour = m_yhat) +
+  xlab(&quot;&quot;) + ylab(&quot;&quot;) +
+  geom_point(size = 3, alpha = 0.5) + scale_colour_viridis_c(&quot;contraception&quot;, option = &quot;C&quot;) + coord_map()</code></pre>
+<p><img src="03-sae-geospatial_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
+<hr />
+<p>Overlaying the points over the map.</p>
+<pre class="r"><code>(out &lt;-
+ggmap(country_map, extent = &quot;device&quot;)  +
+  xlab(&quot;&quot;) + ylab(&quot;&quot;) +
+  geom_point(data = raster_tbl, aes(y = lat, x = lon, colour = m_yhat), size = 3, alpha = 0.3) + scale_colour_viridis_c(&quot;contraception&quot;, option = &quot;C&quot;))</code></pre>
+<p><img src="03-sae-geospatial_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
+<p>One can get the <code>raster_map.png</code> file by running
+<code>ggsave(out, filename = "raster_map.png", width = 10, height = 8)</code>.</p>
+</div>
+<div id="area-level-overview" class="section level2">
+<h2>Area level (overview)</h2>
+<ul>
+<li>Now we are creating a – administrative level 2 – small area estimate
+map.</li>
+<li><a href="https://data.humdata.org/dataset/cod-ab-gha">Shapefile is
+from here.</a></li>
+<li>We are using the <code>grid_coord</code> we created from the raster
+map.</li>
+<li>Now we choose the intersection of grid point with each admin area,
+and then take the average over it.</li>
+</ul>
+</div>
+<div id="importing-the-shapefile" class="section level2">
+<h2>Importing the shapefile</h2>
+<ul>
+<li>We import the administrative file.</li>
+<li>One should choose the right administrative level from the available
+data set.</li>
+<li>In this example, we use level 2.</li>
+</ul>
+<pre class="r"><code>level_2_geom &lt;- st_read(&quot;sae-geospatial/data/admin_shapefiles/gha_admbnda_adm2_gss_20210308.shp&quot;, quiet = TRUE)</code></pre>
+</div>
+<div id="producing-the-prediction-grid" class="section level2">
+<h2>Producing the prediction grid</h2>
+<ul>
+<li>For each area (administrative region), we create a <span
+class="math inline">\(7\times 7\)</span> box grid and choose the portion
+within the area.</li>
+<li>For each point within the area, we choose the nearest 10% clusters
+(from DHS survey), and sample 30% from those clusters’ data.</li>
+<li>Then we calculate the prediction for each point, and MSE for each
+area.</li>
+<li>In this example, the model has two predictor variables
+<code>V218R</code> and <code>V013R</code>, which can be found in the
+code. If the model uses different variables, one can change the modeling
+part.</li>
+</ul>
+<pre class="r"><code>outcome &lt;- 
+  produce_m_v_sae(spatial_model_fit, level_2_geom, 
+                  coord_info, frac = 0.1, resampling = 0.3, counter = FALSE)</code></pre>
+</div>
+<div id="creating-a-plot" class="section level2">
+<h2>Creating a plot</h2>
+<pre class="r"><code>sae_map &lt;- ggplot(outcome) + 
+  geom_sf(aes(fill = m)) + 
+  scale_fill_viridis_c(name = &quot;Modern \nContraception Use&quot;, option = &quot;B&quot;) 
+print(sae_map)
+
+sae_map2 &lt;- ggplot(outcome) + 
+  geom_sf(aes(fill = v)) + 
+  scale_fill_viridis_c(name = &quot;Modern \nContraception Use (MSE)&quot;, option = &quot;B&quot;) 
+print(sae_map2)</code></pre>
+<p><img src="sae-geospatial/images/map1.png" width="672" /><img src="sae-geospatial/images/map2.png" width="672" /></p>
+<p>One can create the <code>ghana_sae_map_1.png</code> by running
+<code>ggsave(sae_map, filename = "ghana_sae_map_1.png", width = 8, height = 8)</code>.</p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

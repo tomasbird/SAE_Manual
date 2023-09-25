@@ -15,6 +15,10 @@ This site provides an introduction the the UNFPA's small area estimation tools t
 Future developments may include further tools for facilitating harmonization and indicator calculations, as well as an online version of the UNFPA's Small Area Estimation Guidance document that is the basis for the SAE tool and harmonization methods. 
 
 
+# Software Requirements
+
+Each of the tools presented here is built using the R programming environment. Code needed to run each tool  is hosted in the [UNFPA github site](https://github.com/unfpasae).  The tools  must be built on a user's laptop and requires prior installation of both [R](https://www.r-project.org/) and are best run in the [RStudio](https://posit.co/downloads/) integrated development environment. Finally, you will need to have [Git installed](https://github.com/git-guides/install-git). 
+
 # Navigation
 
 The topics mentioned above can be accessed using the tabs at the top of the page.  New topics will be added as they are developed.  Within each topic, chapters and subsections can be accessed in the sidebar. 
